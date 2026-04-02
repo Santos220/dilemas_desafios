@@ -129,3 +129,32 @@ AVAILABLE_ALGORITHMS = [
     AlwaysCooperate, AlwaysDefect, RandomChoice, TitForTat, GrimTrigger,
     SuspiciousTitForTat, Pavlov, TitForTwoTats, HardMajority, Alternator
 ]
+
+# Lista de Strings para uma Lista de Objetos
+MAPA_ALGORITMOS = {
+    'AlwaysCooperate': AlwaysCooperate,
+    'AlwaysDefect': AlwaysDefect,
+    'RandomChoice': RandomChoice,
+    'TitForTat': TitForTat,
+    'GrimTrigger': GrimTrigger,
+    'SuspiciousTitForTat': SuspiciousTitForTat,
+    'Pavlov': Pavlov,
+    'TitForTwoTats': TitForTwoTats,
+    'HardMajority': HardMajority,
+    'Alternator': Alternator
+}
+
+def criar_algoritmos(lista_dados):
+    algoritmos_instanciados = [] 
+    
+    for item in lista_dados:
+        nome = lista_dados[item]        
+        ClasseDoAlgoritmo = MAPA_ALGORITMOS.get(nome)
+        
+        if ClasseDoAlgoritmo:
+            novo_jogador = ClasseDoAlgoritmo()
+            algoritmos_instanciados.append(novo_jogador)
+        else:
+            print(f"Erro: O algoritmo '{item}' não foi reconhecido pelo sistema.")
+            
+    return algoritmos_instanciados
