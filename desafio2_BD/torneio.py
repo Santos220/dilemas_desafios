@@ -1,16 +1,17 @@
 import random
 import tournament_core
 import PrisonersDilemma
-from tournament_core import Player
+
 
 # Métricas Iniciais
 ruido = tournament_core.GameEngine.generate_noise_level()
 num_rodadas = tournament_core.GameEngine.generate_rounds_count()
-
+print(f"\n---Dados da Partida---\nNível de Ruído: {ruido*100:.1f}%\nNúmero de Rodadas: {num_rodadas}\n")
 
 # Jogadores
-player1 = Player("Walter")
-player2 = Player("Jesse")
+player1 = tournament_core.Player("Walter")
+player2 = tournament_core.Player("Jesse")
+print(f"[Jogadores: {player1.name} vs {player2.name}]\n")
 
 
 # Escolha das Estratégias
@@ -28,8 +29,9 @@ while len(player1.hand) < 4 or len(player2.hand) < 4:
         indice = random.randint(0, len(AVAILABLE_ALGORITHMS) - 1)
         player2.hand.append(AVAILABLE_ALGORITHMS.pop(indice))
     
-print(f"Estratégias {player1.name}: {player1.hand}")
-print(f"Estratégias {player2.name}: {player2.hand}")
+print("---Estratégias escolhidas:---")
+print(f"{player1.name}: {player1.hand}")
+print(f"{player2.name}: {player2.hand}")
 
 
 # Tratamento de Objetos
@@ -38,21 +40,44 @@ player2.hand = tournament_core.criar_algoritmos(player2.hand)
 
 
 # Inicio da Partida
-# (implementar...)
+vitorias1 = 0
+vitorias2 = 0
+print("\n--- Início do Torneio! ---\n")
 
-# Teste de Torneio
-# always_defect = tournament_core.AlwaysDefect()
-# always_cooperate = tournament_core.AlwaysCooperate()
+while vitorias1 < 3 and vitorias2 < 3:
+    # Em caso de empate (2X2):
+    if vitorias1 == 2 and vitorias2 == 2:
+        print("\n--- EMPATE 2x2! Resgatando uma carta do descarte ---")
+        player1.hand.append(player1.discard_pile.pop(random.randint(0, len(player1.discard_pile) - 1)))
+        player2.hand.append(player2.discard_pile.pop(random.randint(0, len(player2.discard_pile) - 1)))
 
-# resultado = tournament_core.Combate(always_defect, always_cooperate, ruido, num_rodadas=30).jogar()
+    alg1 = player1.hand.pop(random.randint(0, len(player1.hand) - 1))
+    alg2 = player2.hand.pop(random.randint(0, len(player2.hand) - 1))
+    
+    combate = PrisonersDilemma.Combate(alg1, alg2, ruido, num_rodadas)
+    resultado = combate.jogar()
+    
+    pontos1 = sum(item['j1_pontos'] for item in resultado)
+    pontos2 = sum(item['j2_pontos'] for item in resultado)
+    
+    if pontos1 > pontos2:
+        vitorias1 += 1
+        print(f"-> Vitória de {player1.name}! ({alg1.name} - {pontos1} x {pontos2} - {alg2.name})")
+    elif pontos2 > pontos1:
+        vitorias2 += 1
+        print(f"-> Vitória de {player2.name}! ({alg1.name} - {pontos1} x {pontos2} - {alg2.name})")
+    else:
+        print(f"Empate na série: {pontos1} pontos cada.")
+        
+    player1.discard_pile.append(alg1)
+    player2.discard_pile.append(alg2)
 
-# pontos1 = sum(item['j1_pontos'] for item in resultado)
-# pontos2 = sum(item['j2_pontos'] for item in resultado)
 
-# for item in resultado:
-#     print(f"Rodada {item['num_rodada']}:")
-#     print(f"- Always Defect    - Escolha: {item['j1_escolha_real']} | Ruído: {item['j1_escolha_pos_ruido']} | Pontos: {item['j1_pontos']}")
-#     print(f"- Always Cooperate - Escolha: {item['j2_escolha_real']} | Ruído: {item['j2_escolha_pos_ruido']} | Pontos: {item['j2_pontos']}\n")
+# Declarando o Vencedor Final
+print("\n" + "-"*30)
+if vitorias1 == 3:
+    print(f"🏆 {player1.name.upper()} É O VENCEDOR FINAL!")
+else:
+    print(f"🏆 {player2.name.upper()} É O VENCEDOR FINAL!")
+print("-"*30)
 
-# print(f"Pontuação total do Always Defect: {pontos1}")
-# print(f"Pontuação total do Always Cooperate: {pontos2}")
