@@ -148,8 +148,7 @@ def criar_algoritmos(lista_dados):
     algoritmos_instanciados = [] 
     
     for item in lista_dados:
-        nome = lista_dados[item]        
-        ClasseDoAlgoritmo = MAPA_ALGORITMOS.get(nome)
+        ClasseDoAlgoritmo = MAPA_ALGORITMOS.get(item)
         
         if ClasseDoAlgoritmo:
             novo_jogador = ClasseDoAlgoritmo()
