@@ -49,21 +49,25 @@ class Strategy:
 
 class AlwaysCooperate(Strategy):
     name = "Always Cooperate"
+    id = 1
     def play(self, my_history, opp_history):
         return Action.COOPERATE
 
 class AlwaysDefect(Strategy):
     name = "Always Defect"
+    id = 2
     def play(self, my_history, opp_history):
         return Action.DEFECT
 
 class RandomChoice(Strategy):
     name = "Random Choice"
+    id = 3
     def play(self, my_history, opp_history):
         return random.choice([Action.COOPERATE, Action.DEFECT])
 
 class TitForTat(Strategy):
     name = "Tit For Tat"
+    id = 4
     def play(self, my_history, opp_history):
     
         if not opp_history:
@@ -72,6 +76,7 @@ class TitForTat(Strategy):
 
 class GrimTrigger(Strategy):
     name = "Grim Trigger"
+    id = 5
     def play(self, my_history, opp_history):
     
         if Action.DEFECT in opp_history:
@@ -80,6 +85,7 @@ class GrimTrigger(Strategy):
 
 class SuspiciousTitForTat(Strategy):
     name = "Suspicious Tit For Tat"
+    id = 6
     def play(self, my_history, opp_history):
     
         if not opp_history:
@@ -88,6 +94,7 @@ class SuspiciousTitForTat(Strategy):
 
 class Pavlov(Strategy):
     name = "Pavlov (Win-Stay, Lose-Shift)"
+    id = 7
     def play(self, my_history, opp_history):
     
         if not my_history or not opp_history:
@@ -98,6 +105,7 @@ class Pavlov(Strategy):
 
 class TitForTwoTats(Strategy):
     name = "Tit For Two Tats"
+    id = 8
     def play(self, my_history, opp_history):
     
         if len(opp_history) < 2:
@@ -108,6 +116,7 @@ class TitForTwoTats(Strategy):
 
 class HardMajority(Strategy):
     name = "Hard Majority"
+    id = 9
     def play(self, my_history, opp_history):
     
         if not opp_history:
@@ -119,6 +128,7 @@ class HardMajority(Strategy):
 
 class Alternator(Strategy):
     name = "Alternator"
+    id = 10
     def play(self, my_history, opp_history):
     
         if len(my_history) % 2 == 0:
