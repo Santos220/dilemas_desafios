@@ -67,7 +67,7 @@ while vitorias1 < 3 and vitorias2 < 3:
         vitorias2 += 1
         print(f"-> Vitória de {player2.name}! ({alg1.name} - {pontos1} x {pontos2} - {alg2.name})")
     else:
-        print(f"Empate na série: {pontos1} pontos cada.")
+        print(f"Empate na série: {pontos1} pontos cada. | {alg1.name} vs {alg2.name}")
         
     player1.discard_pile.append(alg1)
     player2.discard_pile.append(alg2)
