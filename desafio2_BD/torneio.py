@@ -8,6 +8,7 @@ ruido = tournament_core.GameEngine.generate_noise_level()
 num_rodadas = tournament_core.GameEngine.generate_rounds_count()
 print(f"\n---Dados da Partida---\nNível de Ruído: {ruido*100:.1f}%\nNúmero de Rodadas: {num_rodadas}\n")
 
+
 # Jogadores
 player1 = tournament_core.Player("Walter")
 player2 = tournament_core.Player("Jesse")
@@ -68,6 +69,8 @@ while vitorias1 < 3 and vitorias2 < 3:
         print(f"-> Vitória de {player2.name}! ({alg1.name} - {pontos1} x {pontos2} - {alg2.name})")
     else:
         print(f"Empate na série: {pontos1} pontos cada. | {alg1.name} vs {alg2.name}")
+        player1.hand.append(alg1)
+        player2.hand.append(alg2)
         
     player1.discard_pile.append(alg1)
     player2.discard_pile.append(alg2)
