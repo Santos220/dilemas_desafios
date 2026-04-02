@@ -33,22 +33,26 @@ print(f"Estratégias {player2.name}: {player2.hand}")
 
 
 # Tratamento de Objetos
-# (Implementar...)
+player1.hand = tournament_core.criar_algoritmos(player1.hand)
+player2.hand = tournament_core.criar_algoritmos(player2.hand)
 
+
+# Inicio da Partida
+# (implementar...)
 
 # Teste de Torneio
-always_defect = tournament_core.AlwaysDefect()
-always_cooperate = tournament_core.AlwaysCooperate()
+# always_defect = tournament_core.AlwaysDefect()
+# always_cooperate = tournament_core.AlwaysCooperate()
 
-resultado = tournament_core.Combate(always_defect, always_cooperate, ruido, num_rodadas=30).jogar()
+# resultado = tournament_core.Combate(always_defect, always_cooperate, ruido, num_rodadas=30).jogar()
 
-pontos1 = sum(item['j1_pontos'] for item in resultado)
-pontos2 = sum(item['j2_pontos'] for item in resultado)
+# pontos1 = sum(item['j1_pontos'] for item in resultado)
+# pontos2 = sum(item['j2_pontos'] for item in resultado)
 
-for item in resultado:
-    print(f"Rodada {item['num_rodada']}:")
-    print(f"- Always Defect    - Escolha: {item['j1_escolha_real']} | Ruído: {item['j1_escolha_pos_ruido']} | Pontos: {item['j1_pontos']}")
-    print(f"- Always Cooperate - Escolha: {item['j2_escolha_real']} | Ruído: {item['j2_escolha_pos_ruido']} | Pontos: {item['j2_pontos']}\n")
+# for item in resultado:
+#     print(f"Rodada {item['num_rodada']}:")
+#     print(f"- Always Defect    - Escolha: {item['j1_escolha_real']} | Ruído: {item['j1_escolha_pos_ruido']} | Pontos: {item['j1_pontos']}")
+#     print(f"- Always Cooperate - Escolha: {item['j2_escolha_real']} | Ruído: {item['j2_escolha_pos_ruido']} | Pontos: {item['j2_pontos']}\n")
 
-print(f"Pontuação total do Always Defect: {pontos1}")
-print(f"Pontuação total do Always Cooperate: {pontos2}")
+# print(f"Pontuação total do Always Defect: {pontos1}")
+# print(f"Pontuação total do Always Cooperate: {pontos2}")
