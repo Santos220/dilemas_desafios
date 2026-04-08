@@ -11,13 +11,3 @@ services:
       POSTGRES_DB: torneio_db
     ports:
       - "5433:5432"
-
-  # Configuração do MongoDB
-  mongo_db:
-    image: mongo:latest
-    container_name: teste-mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password123
-    ports:
-      - "27017:27017"
