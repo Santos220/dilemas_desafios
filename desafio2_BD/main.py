@@ -1,6 +1,11 @@
 import random
 import tournament_core
 import PrisonersDilemma
+import database
+from models import Partida, Serie, Rodada
+
+database.iniciar_banco()
+db_session = database.SessionLocal()
 
 # --- Funções de Interação com o Usuário ---
 def escolher_draft(jogador, algoritmos_disponiveis):
@@ -42,12 +47,28 @@ print(f"\n---Dados da Partida---\nNível de Ruído: {ruido*100:.1f}%\nNúmero de
 
 
 # Jogadores
-print("\n--- Cadastro de Jogadores ---")
+print("--- Cadastro de Jogadores ---")
 nome_p1 = input("Digite o nome do Jogador 1: ")
 nome_p2 = input("Digite o nome do Jogador 2: ")
 player1 = tournament_core.Player(nome_p1)
 player2 = tournament_core.Player(nome_p2)
+# Cadastro via ORM
+id_p1 = database.obter_ou_criar_jogador(db_session, player1.name)
+id_p2 = database.obter_ou_criar_jogador(db_session, player2.name)
+
 print(f"\n[Jogadores: {player1.name} vs {player2.name}]\n")
+
+
+# Criando a Partida no Banco
+nova_partida = Partida(
+    id_jogador1=id_p1, 
+    id_jogador2=id_p2, 
+    ruido_sorteado=0.15,
+    id_vencedor=None
+)
+db_session.add(nova_partida)
+db_session.commit()
+print(f"Partida aberta! O ID gerado foi: {nova_partida.id_partida}")
 
 
 # Escolha das Estratégias
@@ -55,7 +76,7 @@ AVAILABLE_ALGORITHMS = [
     'AlwaysCooperate', 'AlwaysDefect', 'RandomChoice', 'TitForTat', 'GrimTrigger',
     'SuspiciousTitForTat', 'Pavlov', 'TitForTwoTats', 'HardMajority', 'Alternator'
 ]
-
+# Coin Toss para Escolha de Cartas
 while len(player1.hand) < 4 or len(player2.hand) < 4:    
     moeda = tournament_core.GameEngine.coin_toss()
     if moeda == 'Player 1' and len(player1.hand) < 4:
@@ -69,7 +90,6 @@ print("---Estratégias escolhidas:---")
 print(f"{player1.name}: {player1.hand}")
 print(f"{player2.name}: {player2.hand}")
 
-
 # Tratamento de Objetos
 player1.hand = tournament_core.criar_algoritmos(player1.hand)
 player2.hand = tournament_core.criar_algoritmos(player2.hand)
@@ -78,7 +98,7 @@ player2.hand = tournament_core.criar_algoritmos(player2.hand)
 # Inicio da Partida
 vitorias1 = 0
 vitorias2 = 0
-print("\n--- Início do Torneio! ---\n")
+print("\n--- Início do Torneio! ---")
 
 while vitorias1 < 3 and vitorias2 < 3:
     # Em caso de empate (2X2):
@@ -96,12 +116,29 @@ while vitorias1 < 3 and vitorias2 < 3:
     pontos1 = sum(item['j1_pontos'] for item in resultado)
     pontos2 = sum(item['j2_pontos'] for item in resultado)
     
+    # Salva a Série (Turno)
+    nova_serie = Serie(
+        id_partida=nova_partida.id_partida,
+        num_serie=vitorias1 + vitorias2 + 1,
+        id_algoritmo_j1=alg1.id,
+        id_algoritmo_j2=alg2.id,
+        pontos_j1=pontos1,
+        pontos_j2=pontos2
+    )
+    db_session.add(nova_serie)
+    db_session.commit()
+    
+    # Salva as Rodadas (Jogadas)
+    database.salvar_rodadas_em_massa(db_session, nova_serie.id_serie, resultado)
+    
     if pontos1 > pontos2:
         vitorias1 += 1
         print(f"-> Vitória de {player1.name}! ({alg1.name} - {pontos1} x {pontos2} - {alg2.name})")
+        print(f"Placar Atual: {player1.name} {vitorias1} x {vitorias2} {player2.name}\n")
     elif pontos2 > pontos1:
         vitorias2 += 1
         print(f"-> Vitória de {player2.name}! ({alg1.name} - {pontos1} x {pontos2} - {alg2.name})")
+        print(f"Placar Atual: {player1.name} {vitorias1} x {vitorias2} {player2.name}\n")
     else:
         print(f"-> Empate na série: {pontos1} pontos cada. | {alg1.name} vs {alg2.name}")
         player1.hand.append(alg1)
@@ -115,7 +152,12 @@ while vitorias1 < 3 and vitorias2 < 3:
 print("\n" + "-"*30)
 if vitorias1 == 3:
     print(f"🏆 {player1.name.upper()} É O VENCEDOR FINAL!")
+    nova_partida.id_vencedor = id_p1
+    db_session.commit()
+    print("Vencedor registrado com sucesso!")
 else:
     print(f"🏆 {player2.name.upper()} É O VENCEDOR FINAL!")
+    nova_partida.id_vencedor = id_p1
+    db_session.commit()
+    print("Vencedor registrado com sucesso!")
 print("-"*30)
-
