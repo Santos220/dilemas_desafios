@@ -17,20 +17,9 @@ def obter_escolha_segura(lista_opcoes, mensagem_cabecalho):
             print("Por favor, digite apenas números.")
 
 
-def configurar_jogadores(db_session, database_module):
-    print("--- Cadastro de Jogadores ---")
-    p1 = tournament_core.Player(input("Digite o nome do Jogador 1: "))
-    p2 = tournament_core.Player(input("Digite o nome do Jogador 2: "))
-    
-    # Já sincroniza com o banco e guarda o ID no objeto
-    p1.id_db = database_module.obter_ou_criar_jogador(db_session, p1.name)
-    p2.id_db = database_module.obter_ou_criar_jogador(db_session, p2.name)
-    
-    print(f"\n--- Jogadores: {p1.name} vs {p2.name} ---")
-    return p1, p2
-
 # Escolha das Cartas (Draft)
 def realizar_draft(player1, player2):
+    # <OBS> available_algorithms: A Lista de Strings deve ser recebida como parâmetro, não da forma abaixo:
     AVAILABLE_ALGORITHMS = [
         'AlwaysCooperate', 'AlwaysDefect', 'RandomChoice', 'TitForTat', 'GrimTrigger',
         'SuspiciousTitForTat', 'Pavlov', 'TitForTwoTats', 'HardMajority', 'Alternator'

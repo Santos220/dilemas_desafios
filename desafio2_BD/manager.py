@@ -1,6 +1,6 @@
 import PrisonersDilemma
 import database
-from interface import obter_escolha_segura
+from player_hand import obter_escolha_segura
 
 class Juiz:
     def __init__(self, p1, p2, session, partida_db):
