@@ -18,20 +18,14 @@ def obter_escolha_segura(lista_opcoes, mensagem_cabecalho):
 
 
 # Escolha das Cartas (Draft)
-def realizar_draft(player1, player2):
-    # <OBS> available_algorithms: A Lista de Strings deve ser recebida como parâmetro, não da forma abaixo:
-    AVAILABLE_ALGORITHMS = [
-        'AlwaysCooperate', 'AlwaysDefect', 'RandomChoice', 'TitForTat', 'GrimTrigger',
-        'SuspiciousTitForTat', 'Pavlov', 'TitForTwoTats', 'HardMajority', 'Alternator'
-    ]
-    
+def realizar_draft(player1, player2, avaiable_algorithms):    
     while len(player1.hand) < 4 or len(player2.hand) < 4:    
         moeda = tournament_core.GameEngine.coin_toss()
         if moeda == 'Player 1' and len(player1.hand) < 4:
-            carta = obter_escolha_segura(AVAILABLE_ALGORITHMS, f">>> DRAFT: {player1.name}, escolha uma carta:")
+            carta = obter_escolha_segura(avaiable_algorithms, f">>> DRAFT: {player1.name}, escolha uma carta:")
             player1.hand.append(carta)     
         elif moeda == 'Player 2' and len(player2.hand) < 4:
-            carta = obter_escolha_segura(AVAILABLE_ALGORITHMS, f">>> DRAFT: {player2.name}, escolha uma carta:")
+            carta = obter_escolha_segura(avaiable_algorithms, f">>> DRAFT: {player2.name}, escolha uma carta:")
             player2.hand.append(carta) 
             
     # Tratamento de objetos após o Draft

@@ -135,13 +135,13 @@ class Alternator(Strategy):
             return Action.COOPERATE
         return Action.DEFECT
 
-AVAILABLE_ALGORITHMS = [
-    AlwaysCooperate, AlwaysDefect, RandomChoice, TitForTat, GrimTrigger,
-    SuspiciousTitForTat, Pavlov, TitForTwoTats, HardMajority, Alternator
-]
 
-# Lista de Strings para uma Lista de Objetos
-MAPA_ALGORITMOS = {
+avaiable_algorithms = [
+        'AlwaysCooperate', 'AlwaysDefect', 'RandomChoice', 'TitForTat', 'GrimTrigger',
+        'SuspiciousTitForTat', 'Pavlov', 'TitForTwoTats', 'HardMajority', 'Alternator'
+    ]
+
+algorithms_map = {
     'AlwaysCooperate': AlwaysCooperate,
     'AlwaysDefect': AlwaysDefect,
     'RandomChoice': RandomChoice,
@@ -158,12 +158,12 @@ def criar_algoritmos(lista_dados):
     algoritmos_instanciados = [] 
     
     for item in lista_dados:
-        ClasseDoAlgoritmo = MAPA_ALGORITMOS.get(item)
+        ClasseDoAlgoritmo = algorithms_map.get(item)
         
         if ClasseDoAlgoritmo:
             novo_jogador = ClasseDoAlgoritmo()
             algoritmos_instanciados.append(novo_jogador)
         else:
-            print(f"Erro: O algoritmo '{item}' não foi reconhecido pelo sistema.")
+            print(f"[Erro] O algoritmo '{item}' não foi reconhecido pelo sistema.")
             
     return algoritmos_instanciados
