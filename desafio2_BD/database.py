@@ -20,7 +20,6 @@ def obter_ou_criar_jogador(session, nome_jogador):
         session.add(jogador)
         session.commit()
         session.refresh(jogador)
-        print(f"Novo jogador '{nome_jogador}' cadastrado com ID: {jogador.id_jogador}")
         
     return jogador.id_jogador
 
@@ -68,4 +67,3 @@ def salvar_serie(session, id_partida, num_serie, alg1_id, alg2_id, pts1, pts2):
 def registrar_vencedor(session, partida, id_vencedor):
     partida.id_vencedor = id_vencedor
     session.commit()
-    print("Vencedor registrado com sucesso no banco de dados!")
