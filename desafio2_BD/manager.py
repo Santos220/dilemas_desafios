@@ -97,7 +97,7 @@ class TorneioManager:
             vitorias1, vitorias2, status = Pontuador.atualizar_vitorias(pontos1, vitorias1, pontos2, vitorias2)
             
             if status == 0:
-                self.juiz.devolver_cartas(pontos1, alg1, alg2)
+                self.juiz.devolver_cartas(alg1, alg2)
                 Interface.MatchMessages.empate_rodada(pontos1, alg1, alg2)
             else:
                 Interface.MatchMessages.resultado_rodada(self.p1, self.p2, pontos1, pontos2, alg1, alg2)
