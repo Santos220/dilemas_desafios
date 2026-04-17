@@ -11,7 +11,6 @@ class DataInterface:
     
     @staticmethod
     def menu_escolha_segura(lista_opcoes) -> int:
-        """Exibe o menu e retorna APENAS O NÚMERO escolhido pelo usuário."""
         for i, opcao in enumerate(lista_opcoes):
             nome = opcao.name if hasattr(opcao, 'name') else opcao
             print(f"[{i + 1}] {nome}")
