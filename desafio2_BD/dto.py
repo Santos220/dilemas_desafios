@@ -6,12 +6,6 @@ class CadastroJogadoresDTO:
     nome_j2: str
 
 @dataclass(frozen=True)
-class PartidaConfigDTO:
-    id_partida: int
-    ruido: float
-    num_rodadas: int
-
-@dataclass(frozen=True)
 class AcaoRodadaDTO:
     num_rodada: int
     j1_escolha_real: str
